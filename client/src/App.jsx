@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom'
+import { HashRouter, Route, Switch, withRouter } from 'react-router-dom'
 import Home from './Components/Home/Home'
 import Player from './Components/Player/Player';
 import Register from './Components/Register/Register';
@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 class App extends React.Component {
     render() {
         return (
-            <BrowserRouter>
+            <HashRouter>
                 <Switch>
                     <Route exact path={'/'} component={Landing} />
                     <Route exact path={'/login'} component={Login} />
@@ -23,7 +23,7 @@ class App extends React.Component {
                     <ProtectedRoute auth={this.props.auth} exact path={'/profile'} component={Profile} />
                     <Route exact path={'/team/:team_id'} component={Team} />
                 </Switch>
-            </BrowserRouter>
+            </HashRouter>
         );
     }
 }
