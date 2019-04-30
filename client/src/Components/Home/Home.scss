@@ -1,0 +1,46 @@
+.header {
+    z-index: 1;
+    position: fixed;
+    color: black;
+    height: 120px;
+    width: 100%;
+    // padding: 20px;
+}
+.player-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 40%;
+    height: 90%;
+    color: black;
+    margin-top: 2%;
+    padding: 2%;
+    margin-bottom: 3%;
+}
+
+.main {
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding-top: 15%;
+    @media screen and (max-width: 850px) {
+        padding-top: 35%;
+    }
+}
+
+.search {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    z-index: 2
+}
+
+.search-bar {
+    width: 50vw;
+    /* padding-top: 10%; */
+}
+

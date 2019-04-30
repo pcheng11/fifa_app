@@ -1,0 +1,31 @@
+{
+  "name": "fifa_app_production",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.16.4",
+    "is-empty": "^1.2.0",
+    "jwt-decode": "^2.2.0",
+    "mathjs": "^5.9.0",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.4",
+    "multer": "^1.4.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "engines": {
+    "node": "10.15.0"
+  }
+}

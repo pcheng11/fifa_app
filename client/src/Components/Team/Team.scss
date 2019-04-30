@@ -1,0 +1,57 @@
+
+
+.TeamMain {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+}
+.team {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    padding: 6%;
+    display: grid;
+    grid-template-columns: 39% 3% 59%;
+    grid-template-rows: 35% 3% 62%;
+}
+
+.teamprofileCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 100%;
+    height: 100%;
+    background: white;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    padding: 15px;
+}
+
+
+.news {
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white; 
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    overflow-y: auto;
+    padding: 15px;
+}
+.starting {
+   padding: 15px;
+    border-radius: 10px;
+    overflow-y: auto;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: white;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 4;
+}
