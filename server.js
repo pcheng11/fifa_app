@@ -32,9 +32,9 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, "client", "build")))
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+// });
 // Use routes as a module
 require('./routes/')(app);
 // Connect to mongodb
