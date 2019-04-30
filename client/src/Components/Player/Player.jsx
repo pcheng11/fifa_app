@@ -20,7 +20,7 @@ import { Card,
         Tab } from 'semantic-ui-react';
 import { Progress } from 'reactstrap';
 import axios from 'axios';
-
+import { Chart } from "react-google-charts";
 import { api_url } from "../../api.js";
 import DisplayPentagon from "../../utils/displayPentagon";
 import NavbarHeader from '../Navbar/Navbar.js';
@@ -38,7 +38,7 @@ import GoogleMapReact from 'google-map-react';
  */
 
 class Player extends React.Component {
-    state = { activeItem: 'player', player_id: "", player: [], highlightID: "", open: false, positions: [], followers: 0 }
+    state = { activeItem: 'player', player_id: "", player: [], highlightID: "", open: false, positions: [], followers: 0, trends:null }
     handleItemClick = (name) => {
         this.setState({ activeItem: name });
         if (name === 'home') {
@@ -66,8 +66,11 @@ class Player extends React.Component {
      */ 
     async componentDidMount() {
         const response = await axios.get("/api/player/" + this.state.player_id)
-        this.setState({ player: response.data.data,
-            followers: response.data.data.followers });
+        this.setState({ player: response.data.data, followers: response.data.data.followers });
+        axios.get("/api/trends/" + this.state.player.name).then(res => {
+            this.setState({trends: res.data})
+        });
+        console.log(this.state.player)
     }
 
     /**
@@ -101,37 +104,67 @@ class Player extends React.Component {
             { menuItem: 'News', render: () => <Tab.Pane><News name={this.state.player.name} /></Tab.Pane> },
             { menuItem: 'Similar Players', render: () => <Tab.Pane><SimilarPlayers player={this.state.player} history={this.props.history} renderFavButton={this.renderFavButton} /></Tab.Pane> },
             { menuItem: 'Skill Highlight', render: () => <Tab.Pane><SkillHighlight player_name={this.state.player.name} /></Tab.Pane> },
-            { menuItem: 'Trending', render: () => <Tab.Pane style={{position: "relative"}}><div>{this.trending()}</div></Tab.Pane>}
+            { menuItem: 'Trending', render: () => <Tab.Pane style={{position: "relative"}}><div>{this.trending()}</div></Tab.Pane>},
+            { menuItem: 'User Distribution', render: () => <Tab.Pane style={{ position: "relative" }}><div>{this.distribution()}</div></Tab.Pane> }
         ]
         return < Tab panes={panes} />;
     }
 
+
+    /**
+     * 
+     */
+    distribution = () => {
+        const heatMapData = {
+            positions: this.state.player.location,
+            options: {
+                radius: 20,
+                opacity: 0.6,
+            }
+        };
+        const google = window.google;
+        return (
+            <div style={{ height: '35vh', width: '100%' }}>
+                <GoogleMapReact
+                    ref={(el) => this._googleMap = el}
+                    bootstrapURLKeys={"AIzaSyBlkPdBVduGBwtOUWRH7llSTvHZaZZZsb8"}
+                    defaultCenter={{ lat: 37.0902, lng: -95.7129 }}
+                    defaultZoom={0}
+                    heatmapLibrary={true}
+                    heatmap={heatMapData}
+                />
+            </div>
+        );
+            
+            
+    }
     /**
      * treding heatmap
      */
    trending = () => {
-
-       const heatMapData = {
-           positions: this.state.player.location,
-           options: {
-               radius: 20,
-               opacity: 0.6,
-            }
-        };
-        const google = window.google;
-       return (
-           <div style={{ height: '35vh', width: '100%' }}>
-               <GoogleMapReact
-                   ref={(el) => this._googleMap = el}
-                   bootstrapURLKeys={"AIzaSyBlkPdBVduGBwtOUWRH7llSTvHZaZZZsb8"}
-                   defaultCenter={{ lat: 37.0902, lng: -95.7129 }}
-                   defaultZoom={0}
-                   heatmapLibrary={true}
-                   heatmap={heatMapData}
-               />
+        return (
+            <div style={{ height: '35vh', width: '100%' }}>
+                <Chart
+                    width={'500px'}
+                    height={'300px'}
+                    chartType="GeoChart"
+                    options={{
+                        cols: [
+                            { id: '0', label: 'Provinces', type: 'string' },
+                            { id: '1', label: 'Popularity', type: 'number' }
+                        ],
+                        resolution: "provinces",
+                        region: "US"
+                    }}
+                    data={this.state.trends.data}
+                    mapsApiKey="AIzaSyBlkPdBVduGBwtOUWRH7llSTvHZaZZZsb8"
+                    rootProps={{ 'data-testid': '1' }
+                    }
+                />
             </div>
-       );
+            );
        
+          
    }
 
     /**
