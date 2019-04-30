@@ -10,7 +10,7 @@ import {
 } from 'semantic-ui-react';
 
 import axios from 'axios';
-
+import { youtube_api } from '../../api.js'; 
 
 /**
  * Skill highlight component
@@ -28,7 +28,7 @@ class SkillHighlight extends React.Component {
                 q: this.props.player_name + "skill",
                 part: "snippet",
                 maxResults: 20,
-                key: "AIzaSyApzox__ZeN2k0SkXVoUnHL5iM0Ao4rU8c",
+                key: youtube_api,
                 videoSyndicated: true,
                 type: "video",
                 videoCategoryId: 17
