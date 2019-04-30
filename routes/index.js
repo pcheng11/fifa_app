@@ -10,4 +10,5 @@ module.exports = function (app) {
     app.use('/api/user', require('./user.js'));
     app.use('/api/avatar', require('./avatar.js'));
     app.use('/api/match/user', require('./addMatch.js'));
+    app.use('/api/trends', require('./trends.js'));
 };
