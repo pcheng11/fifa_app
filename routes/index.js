@@ -11,5 +11,5 @@ module.exports = function (app) {
     app.use('/api/avatar', require('./avatar.js'));
     app.use('/api/match/user', require('./addMatch.js'));
     app.use('/api/trends/player', require('./playerTrends.js'));
-    app.use('/api/trends/team', require('./playerTrends.js'));
+    app.use('/api/trends/team', require('./teamTrends.js'));
 };

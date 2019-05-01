@@ -67,7 +67,7 @@ class Player extends React.Component {
     async componentDidMount() {
         const response = await axios.get("/api/player/" + this.state.player_id)
         this.setState({ player: response.data.data, followers: response.data.data.followers });
-        axios.get("/api/trends/" + this.state.player.wiki_name).then(res => {
+        axios.get("/api/trends/player/" + this.state.player.wiki_name).then(res => {
             this.setState({trends: res.data})
         });
         console.log(this.state.player)
