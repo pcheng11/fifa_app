@@ -44,17 +44,21 @@ class Team extends React.Component {
      * query api team end points    
      */
     async componentDidMount() {
-        // match: match_response.data.data
+       // match: match_response.data.data
         const team_response = await axios.get("/api/team/" + this.state.team_id);
+        this.setState({
+            team: team_response.data.data
+        })
+        const trends_response = await axios.get("/api/trends/team/" + this.state.team.name)
         const match_response = await axios.get("/api/match/" + this.state.team_id);
         const user_match_response = await axios.get("/api/match/user/" + this.props.auth.user.id);
-        const trends_response = await axios.get("/api/trends/team/" + team_response.data.data.name)
-        this.setState({ team: team_response.data.data,
-                        followers: team_response.data.data.followers,
+        
+        this.setState({
+                        followers: this.state.team.followers,
                         matches: match_response.data.data.fixture,
                         userMatches: user_match_response.data.data.map(match => { return match }),
                         trends: trends_response.data
-                    });
+    });
     }
 
     renderFavButton = team_id => {
