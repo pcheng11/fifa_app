@@ -50,6 +50,9 @@ router.post('/', (req, res) => {
 });
 
 
+/**
+ * delete the followers
+ */
 router.delete('/', (req, res) => {
     const user_id = req.query.user_id;
     const team_id = req.query.team_id;

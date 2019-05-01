@@ -54,6 +54,9 @@ router.post('/', (req, res) => {
     });
 });
 
+/**
+ * delete the followers
+ */
 router.delete('/', (req, res) => {
     const user_id = req.query.user_id;
     const player_id = req.query.player_id;
