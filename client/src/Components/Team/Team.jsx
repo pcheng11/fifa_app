@@ -44,7 +44,7 @@ class Team extends React.Component {
      * query api team end points    
      */
     async componentDidMount() {
-       // match: match_response.data.data
+        // match: match_response.data.data
         const team_response = await axios.get("/api/team/" + this.state.team_id);
         this.setState({
             team: team_response.data.data
@@ -58,7 +58,7 @@ class Team extends React.Component {
                         matches: match_response.data.data.fixture,
                         userMatches: user_match_response.data.data.map(match => { return match }),
                         trends: trends_response.data
-    });
+                    });
     }
 
     renderFavButton = team_id => {
@@ -93,7 +93,7 @@ class Team extends React.Component {
                         <Grid.Column width={6}>
                             {match.date}
                         </Grid.Column>
-                        <Calendar match={match.game} date={match.datetime} userMatches={userMatches} />
+                        <Calendar match={match.game} date={match.date} userMatches={userMatches} />
                     </Grid>
                     <Divider vertical/>
                 </Segment>

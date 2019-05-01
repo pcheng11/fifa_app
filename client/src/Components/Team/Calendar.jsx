@@ -15,9 +15,10 @@ class Calendar extends React.Component {
      *  Called when the signed in status changes, to update the UI
      *  appropriately. After a sign-in, the API is called.
      */
-     state = { added: false, open: false, link: "", matches: [] };
+     state = { added: false, open: false, link: "", matches: [], date: this.props.date, match: this.props.match };
     
     async componentWillMount() {
+
         if (this.props.userMatches.includes(this.props.match)) {
             this.setState({
                 added: true,
@@ -30,9 +31,12 @@ class Calendar extends React.Component {
     }
 
      updateSigninStatus = (isSignedIn, game, time) => {
+
         if (isSignedIn) {
-            this._addEvent(game, time);
-            alert("Matched Added!")
+            if (time) {
+                this._addEvent(game, time);
+                alert("Matched Added!")
+            }
         } else {
             window.gapi.auth2.getAuthInstance().signIn();
         }
@@ -42,6 +46,7 @@ class Calendar extends React.Component {
     _addEvent = (game, time) => {
         var d1 = new Date(time);
         var d2 = new Date(d1);
+        console.log(time)
         d2.setMinutes(d2.getMinutes() + 90);
         var event = {
             'summary': "Soccer Match: " + game,
@@ -76,6 +81,7 @@ class Calendar extends React.Component {
     }
 
     addEvent = (game, time) => {
+        console.log(time)
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({
                 apiKey: "AIzaSyBlkPdBVduGBwtOUWRH7llSTvHZaZZZsb8",
@@ -95,9 +101,8 @@ class Calendar extends React.Component {
 
 
     render() {
-        const { match, date } = this.props;
-        const { added, open, link } = this.state;
-
+        const { added, open, link, date, match } = this.state;
+        console.log(date)
         if (added) {
                return <Label> Added </Label>
         }
