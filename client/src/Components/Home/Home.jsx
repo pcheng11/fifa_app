@@ -192,6 +192,7 @@ class Home extends Component {
      * age, potentail, attack, defence, rating
      */
     sortBy = (e, { value }) => {
+        this.forceUpdate();
         if (value === 'Age') {
             this.setState({
                 players: this.state.players.sort((a, b) => (a.age > b.age) ? 1 : -1),
@@ -207,6 +208,7 @@ class Home extends Component {
                 ascendChecked: false,
                 sortBy: 'Potential'
             });
+            console.log(this.state.players)
         }
         if (value === 'Overall') {
             this.setState({
@@ -244,7 +246,8 @@ class Home extends Component {
     }
 
     render() {
-        const { activeItem, players, inputVal, searching, ascendChecked, descChecked, teamChecked, placeholder } = this.state
+        const { activeItem, players, teams, inputVal, searching, ascendChecked, descChecked, teamChecked, placeholder } = this.state
+        console.log(players)
         if (searching) {
             var isLoading = true;
         } else {
@@ -312,7 +315,7 @@ class Home extends Component {
                             </Grid.Column>
                         </Grid>
                     </Segment>
-                    <SearchList className="player-list" teamChecked={teamChecked} players={this.state.players} teams={this.state.teams} history={this.props.history} />
+                    <SearchList className="player-list" players={players} teamChecked={teamChecked} teams={teams} history={this.props.history} location={this.props.trends} />
                 </div>
             </div>
         );
@@ -322,6 +325,7 @@ class Home extends Component {
 //get state from redux store and map it to props
 const mapStateToProps = state => ({
     auth: state.auth,
+    trends: state.trends
 });
 
 export default connect(

@@ -237,7 +237,7 @@ class Player extends React.Component {
                     <div className="profileCard">
                         <Segment>
                             <Label style={{ cursor: "pointer" }}
-                                attached='left top'
+                                attached='top'
                             >
                                 {this.renderFavButton(player.player_id, followers)}{' '}
                                 {player.name}{' '}

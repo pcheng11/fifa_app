@@ -27,12 +27,15 @@ import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import axios from 'axios';
 import CheckFollow from '../../utils/renderFavButton';
+
+/**
+ * Favorite players of a user
+ */
 class FavPlayers extends React.Component {
 
-    componentDidMount() {
-        console.log(this.props)
-    }
-
+    /**
+     * helper function for removing a fovarited player
+     */
     handleRemove = async (player_id) => {
         await axios.delete("/api/user/fav_players", {
             params: {
@@ -57,7 +60,7 @@ class FavPlayers extends React.Component {
             );
         }
 
-        if (this.props.user.fav_players === undefined) {
+        if (this.props.user.fav_players.length === 0) {
             return (
                 <Message color='orange'>Your favorited players will be displayed here</Message>
             );
@@ -78,9 +81,7 @@ class FavPlayers extends React.Component {
                 ))
              }
             </List>
-
         );
-
     }
 }
 

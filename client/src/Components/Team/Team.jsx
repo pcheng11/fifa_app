@@ -17,6 +17,7 @@ import { api_url } from "../../api.js";
 import { connect } from "react-redux";
 import axios from 'axios';
 import './Team.scss';
+import { Chart } from "react-google-charts";
 import NavbarHeader from '../Navbar/Navbar.js';
 import DisplayPentagon from "../../utils/displayTeamPentagon";
 import CheckFavTeam from '../../utils/renderFavTeamButton';
@@ -29,7 +30,7 @@ import GoogleMapReact from 'google-map-react';
  * create team component
  */
 class Team extends React.Component {
-    state = { player: null, team: [], team_id: "", matches: [], userMatches: [], added: false }
+    state = { player: null, team: [], team_id: "", matches: [], userMatches: [], added: false, followers: 0, trends: null }
 
 
     static getDerivedStateFromProps(props) {
@@ -47,10 +48,13 @@ class Team extends React.Component {
         const team_response = await axios.get("/api/team/" + this.state.team_id);
         const match_response = await axios.get("/api/match/" + this.state.team_id);
         const user_match_response = await axios.get("/api/match/user/" + this.props.auth.user.id);
-
+        console.log(team_response.data.data.name)
+        const trends_response = await await axios.get("/api/trends/team/" + team_response.data.data.name)
         this.setState({ team: team_response.data.data,
+                        followers: team_response.data.data.followers,
                         matches: match_response.data.data.fixture,
-                        userMatches: user_match_response.data.data.map(match => { return match })
+                        userMatches: user_match_response.data.data.map(match => { return match }),
+                        trends: trends_response.data
                     });
     }
 
@@ -97,13 +101,16 @@ class Team extends React.Component {
         const panes = [
             { menuItem: 'News', render: () => <Tab.Pane><News name={this.state.team.name} /></Tab.Pane> },
             { menuItem: 'Upcoming Matches', render: () => <Tab.Pane>{this.renderMatches()}</Tab.Pane>},
-            { menuItem: 'Trending', render: () => <Tab.Pane style={{ position: "relative" }}><div>{this.trending()}</div></Tab.Pane> }
+            { menuItem: 'Trending', render: () => <Tab.Pane style={{ position: "relative" }}><div>{this.trending()}</div></Tab.Pane> },
+            { menuItem: 'User Distribution', render: () => <Tab.Pane style={{ position: "relative" }}><div>{this.distribution()}</div></Tab.Pane> }
         ]
         return < Tab panes={panes} />;
     }
 
-    trending = () => {
-
+    /**
+     * user distribution function
+     */
+    distribution = () => {
         const heatMapData = {
             positions: this.state.team.location,
             options: {
@@ -126,6 +133,34 @@ class Team extends React.Component {
         );
     }
 
+    /**
+   * treding heatmap
+   */
+    trending = () => {
+        return (
+            <div style={{ height: '35vh', width: '100%' }}>
+                <Segment style={{ margin: "0 auto" }}>
+                    <Chart
+                        width={'500px'}
+                        height={'300px'}
+                        chartType="GeoChart"
+                        options={{
+                            cols: [
+                                { id: '0', label: 'Provinces', type: 'string' },
+                                { id: '1', label: 'Popularity', type: 'number' }
+                            ],
+                            resolution: "provinces",
+                            region: "US"
+                        }}
+                        data={this.state.trends.data}
+                        mapsApiKey="AIzaSyBlkPdBVduGBwtOUWRH7llSTvHZaZZZsb8"
+                        rootProps={{ 'data-testid': '1' }
+                        }
+                    />
+                </Segment>
+            </div>
+        );
+    }
     renderStats = (team) => {
         return (<Segment>
                     <DisplayPentagon team={team}/>
@@ -147,7 +182,7 @@ class Team extends React.Component {
        
     }
     render() {
-        const { activeItem, team } = this.state
+        const { activeItem, team, followers, trends } = this.state
         var flag_name = team.nationality;
         if (flag_name != null) {
             flag_name = flag_name.toLowerCase();
@@ -177,10 +212,13 @@ class Team extends React.Component {
                                 {' '}
                                 <Flag style={{ size: '100px' }} name={flag_name} />
                             </Label>
+                            <Label as='a' color='orange' ribbon='right'>
+                                Followers: {followers}
+                            </Label>
                             <Grid style={{ padding: "2%" }}>
                                 <Grid.Row stretched>
                                     <Grid.Column width={6}>
-                                        <Image style={{ height: "50%", width: "50%", borderRadius: "10px", border: "2px solid grey" }}
+                                        <Image style={{ height: "50%", width: "50%", borderRadius: "10px" }}
                                             id="result-image" src={team.img_url} />
                                     </Grid.Column>
 

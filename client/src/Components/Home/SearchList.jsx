@@ -11,15 +11,14 @@ import { withRouter } from 'react-router-dom';
  * @param {Array} players
  * helper component for rendering the search list 
  */
-class SearchList extends React.Component {
+const SearchList = ({ teamChecked, players, teams, history, location }) => {
 
-    render() {
-        if (this.props.teamChecked) {
+        if (teamChecked) {
             const handleTeamClick = async (team_id) => {
-                await axios.put("/api/team/" + team_id, { location: this.props.trends })
-                this.props.history.push("/team/" + team_id)
+                await axios.put("/api/team/" + team_id, { location: location })
+                history.push("/team/" + team_id)
             }
-            var list = this.props.teams.map((team, index) => {
+            var list = teams.map((team, index) => {
                 return (
                     <List.Item key={index} style={{ padding: "2%" }} onClick={() => handleTeamClick(team.team_id)}>
                         <Image avatar large src={team.img_url} />
@@ -39,10 +38,10 @@ class SearchList extends React.Component {
 
         } else {
             const handlePlayerClick = async (player_id) => {
-                await axios.put("/api/player/" + player_id, { location: this.props.trends })
-                this.props.history.push("/player/" + player_id)
+                await axios.put("/api/player/" + player_id, { location: location })
+                history.push("/player/" + player_id)
             }
-            var list = this.props.players.map((player, index) => {
+            var list = players.map((player, index) => {
                 return (
                     <List.Item key={index} style={{ padding: "2%" }} onClick={() => handlePlayerClick(player.player_id)}>
                         <List.Content floated='right'>
@@ -63,13 +62,5 @@ class SearchList extends React.Component {
             });
         }
         return <div className="player-list"> <List size="massive" animated style={{ height: "100%" }} selection divided verticalAlign='middle'>{list} </List> </div>;
-    };
 };
-
-const mapStateToProps = state => ({
-    trends: state.trends
-});
-
-export default connect(
-    mapStateToProps,
-)(SearchList);
+export default SearchList;

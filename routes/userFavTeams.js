@@ -30,6 +30,8 @@ router.post('/', (req, res) => {
     const user_id = req.body.user_id;
     const team_id = req.body.team_id;
     Team.findOne({ "team_id": team_id }, (err, item) => {
+        item.followers += 1;
+        item.save();
         let team = {
             team_id: item.toObject().team_id,
             img_url: item.toObject().img_url,
@@ -51,6 +53,10 @@ router.post('/', (req, res) => {
 router.delete('/', (req, res) => {
     const user_id = req.query.user_id;
     const team_id = req.query.team_id;
+    Team.findOne({ "team_id": team_id }, (err, team) => {
+        team.followers -= 1;
+        team.save();
+    });
     User.findOneAndUpdate(
         { "_id": mongoose.Types.ObjectId(user_id) },
         { "$pull": { "fav_teams": { "team_id": team_id } } },
