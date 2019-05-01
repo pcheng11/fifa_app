@@ -48,8 +48,7 @@ class Team extends React.Component {
         const team_response = await axios.get("/api/team/" + this.state.team_id);
         const match_response = await axios.get("/api/match/" + this.state.team_id);
         const user_match_response = await axios.get("/api/match/user/" + this.props.auth.user.id);
-        console.log(team_response.data.data.name)
-        const trends_response = await await axios.get("/api/trends/team/" + team_response.data.data.name)
+        const trends_response = await axios.get("/api/trends/team/" + team_response.data.data.name)
         this.setState({ team: team_response.data.data,
                         followers: team_response.data.data.followers,
                         matches: match_response.data.data.fixture,
