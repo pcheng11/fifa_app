@@ -14,7 +14,7 @@
     "jwt-decode": "^2.2.0",
     "lazy-line-painter": "^1.9.6",
     "mathjs": "^5.9.0",
-    "mocha": "^6.1.2",
+    "mocha": "^10.2.0",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.0",
     "multer": "^1.4.1",
